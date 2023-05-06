@@ -100,7 +100,7 @@ const profile = async (req, res, next) => {
     const user = await UserModel.findById(req.user)
       .populate("blogs")
       .select("-password");
-    const blog = await BlogModel.findOne({ author: req.user._id }).populate(
+    const blog = await BlogModel.findOne({ author: req.user?._id }).populate(
       "author",
       "-password"
     );
