@@ -1,7 +1,6 @@
 // error handler middleware
 const errorHandler = (err, req, res, next) => {
   // Log to console for dev
-  console.log(err.stack.red);
   const statusCode = err.statusCode || 400;
   res.status(statusCode).json({
     message: err.message,
