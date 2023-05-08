@@ -48,19 +48,20 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/blogs", blogRoutes);
 app.use("/api/v1/categories", categoryRoutes);
 
+// Serve static assets in production
+if (process.env.NODE_ENV === "production") {
+  // Set static folder
+  app.use(express.static("frontend/build"));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"));
+  });
+}
+
 // Error handler middleware
 app.use(notFound);
 app.use(errorHandler);
 
-// Serve static assets in production
-// if (process.env.NODE_ENV === "production") {
-//   // Set static folder
-//   app.use(express.static("frontend/build"));
-
-//   app.get("*", (req, res) => {
-//     res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"));
-//   });
-// }
 
 // Start server
 app.listen(PORT, () => {
