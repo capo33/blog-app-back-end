@@ -8,7 +8,6 @@ import connectDB from "./config/database.js";
 import authRoutes from "./routes/auth.routes.js";
 import blogRoutes from "./routes/blog.routes.js";
 import categoryRoutes from "./routes/category.routes.js";
-import BlogModel from "./models/Blog.js";
 import { errorHandler, notFound } from "./middlewares/errorHandler.js";
 import upload from "./middlewares/uploadMiddleware.js";
 
@@ -24,6 +23,15 @@ const app = express();
 // Port
 const PORT = process.env.PORT || 5000;
 
+// Serve static assets in production
+if (process.env.NODE_ENV === "production") {
+  // Set static folder
+  app.use(express.static("frontend/build"));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"));
+  });
+}
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -48,20 +56,9 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/blogs", blogRoutes);
 app.use("/api/v1/categories", categoryRoutes);
 
-// Serve static assets in production
-if (process.env.NODE_ENV === "production") {
-  // Set static folder
-  app.use(express.static("frontend/build"));
-
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"));
-  });
-}
-
 // Error handler middleware
 app.use(notFound);
 app.use(errorHandler);
-
 
 // Start server
 app.listen(PORT, () => {
