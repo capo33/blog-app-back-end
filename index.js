@@ -60,7 +60,7 @@ app.use("/api/v1/categories", categoryRoutes);
 app.use(errorHandler);
 
 // Invalid path error handler middleware
-app.use(notFound);
+// app.use(notFound);
   
 // Start server
 app.listen(PORT, () => {
