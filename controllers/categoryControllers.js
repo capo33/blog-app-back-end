@@ -100,6 +100,7 @@ const updateCategory = async (req, res, next) => {
 // @access  Private/Admin
 const deleteCategory = async (req, res, next) => {
   const { id } = req.params;
+
   try {
     const deletedCat = await CategoryModel.findOne({ _id: id });
 

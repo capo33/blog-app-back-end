@@ -110,6 +110,7 @@ const profile = async (req, res, next) => {
       throw new Error("User not found");
     }
 
+    console.log(user);
     // get the token from the request header
     const token = req.headers.authorization.split(" ")[1];
 

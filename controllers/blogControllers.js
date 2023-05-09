@@ -1,7 +1,5 @@
 import mongoose from "mongoose";
 import BlogModel from "../models/Blog.js";
-import UserModel from "../models/User.js";
-import slugify from "slugify";
 import fs from "fs";
 
 // @desc    Get all blogs
@@ -273,6 +271,31 @@ const searchBlogs = async (req, res, next) => {
   }
 };
 
+// @desc Get blogs by user
+// @route GET /api/v1/blogs/user/:id
+// @access Public
+const getBlogsByUser = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw new Error("User not found");
+    }
+
+    const blogs = await BlogModel.find({ author: id }).populate(
+      "author",
+      "-password"
+    );
+
+    res.status(200).json({
+      success: true,
+      blogs,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export {
   getBlogs,
   getBlog,
@@ -284,4 +307,5 @@ export {
   getBlogsByTag,
   getRelatedBlogs,
   searchBlogs,
+  getBlogsByUser,
 };
