@@ -29,6 +29,4 @@ router.patch("/like/:id", authMiddleware, blogController.likeBlog);
 
 router.delete("/:id", authMiddleware, blogController.deleteBlog);
 
-router.get("/user/:id", blogController.getBlogsByUser);
-
 export default router;
